@@ -1,0 +1,237 @@
+/**
+ * WooCommerce Style Overrides
+ * 
+ * @package Lujo_Store
+ */
+
+/* Product Grid */
+.woocommerce ul.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.woocommerce ul.products li.product {
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.woocommerce ul.products li.product:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Images */
+.woocommerce ul.products li.product img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.woocommerce ul.products li.product:hover img {
+    transform: scale(1.05);
+}
+
+/* Product Titles */
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+    padding: 0 1rem;
+}
+
+/* Product Prices */
+.woocommerce ul.products li.product .price {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: hsl(var(--primary));
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+}
+
+.woocommerce ul.products li.product .price del {
+    font-size: 0.875rem;
+    color: hsl(var(--muted-foreground));
+    margin-right: 0.5rem;
+}
+
+.woocommerce ul.products li.product .price ins {
+    text-decoration: none;
+    color: hsl(var(--luxury-gold));
+}
+
+/* Add to Cart Buttons */
+.woocommerce ul.products li.product .button {
+    background-color: hsl(var(--luxury-gold));
+    color: hsl(var(--primary));
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: block;
+    margin: 0 1rem 1rem;
+}
+
+.woocommerce ul.products li.product .button:hover {
+    background-color: hsl(var(--luxury-champagne));
+    transform: scale(1.02);
+}
+
+/* Sale Badge */
+.woocommerce span.onsale {
+    background-color: hsl(var(--luxury-gold));
+    color: hsl(var(--primary));
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-height: auto;
+    line-height: 1.5;
+}
+
+/* Single Product Page */
+.woocommerce div.product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.woocommerce div.product .product_title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.woocommerce div.product p.price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: hsl(var(--luxury-gold));
+    margin-bottom: 1.5rem;
+}
+
+.woocommerce div.product .woocommerce-product-details__short-description {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: hsl(var(--muted-foreground));
+}
+
+/* Cart */
+.woocommerce-cart table.cart {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+}
+
+.woocommerce-cart table.cart td {
+    border-top: 1px solid hsl(var(--border));
+}
+
+.woocommerce-cart .cart-collaterals {
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 2rem;
+}
+
+/* Checkout */
+.woocommerce-checkout .woocommerce-checkout-review-order {
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 2rem;
+}
+
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+}
+
+.woocommerce form .form-row input.input-text:focus,
+.woocommerce form .form-row textarea:focus {
+    border-color: hsl(var(--ring));
+    outline: none;
+    box-shadow: 0 0 0 3px hsl(var(--ring) / 0.1);
+}
+
+/* Buttons */
+.woocommerce #respond input#submit,
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button {
+    background-color: hsl(var(--luxury-gold));
+    color: hsl(var(--primary));
+    border: none;
+    padding: 0.875rem 1.75rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.woocommerce #respond input#submit:hover,
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce input.button:hover {
+    background-color: hsl(var(--luxury-champagne));
+}
+
+.woocommerce #respond input#submit.alt,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
+.woocommerce input.button.alt {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+}
+
+.woocommerce #respond input#submit.alt:hover,
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover,
+.woocommerce input.button.alt:hover {
+    background-color: hsl(var(--primary) / 0.9);
+}
+
+/* Messages */
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    border-left-width: 4px;
+}
+
+.woocommerce-message {
+    background-color: hsl(var(--secondary));
+    border-left-color: hsl(var(--luxury-gold));
+}
+
+.woocommerce-error {
+    background-color: hsl(var(--destructive) / 0.1);
+    border-left-color: hsl(var(--destructive));
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .woocommerce div.product {
+        grid-template-columns: 1fr;
+    }
+    
+    .woocommerce ul.products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .woocommerce ul.products {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Luxury typography */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap');
+
+@layer base {
+  :root {
+    /* Lujo Luxury — Ivory & Deep Noir */
+    --background: 40 20% 98%;
+    --foreground: 0 0% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+
+    --primary: 35 85% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 15% 92%;
+    --secondary-foreground: 0 0% 15%;
+
+    --muted: 40 15% 94%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 35 85% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 35 85% 45%;
+
+    --radius: 0.75rem;
+
+    --luxury-gold: 35 85% 45%;
+    --luxury-cream: 40 30% 96%;
+    --luxury-charcoal: 0 0% 12%;
+    --luxury-champagne: 43 74% 66%;
+    --luxury-deep-black: 0 0% 9%;
+
+    /* Color Palette 1-8 */
+    --color-1: 0 0% 9%;
+    --color-2: 0 0% 20%;
+    --color-3: 0 0% 45%;
+    --color-4: 0 0% 70%;
+    --color-5: 35 85% 45%;
+    --color-6: 43 74% 66%;
+    --color-7: 0 0% 96%;
+    --color-8: 0 0% 100%;
+
+    --gradient-luxury: linear-gradient(135deg, hsl(var(--luxury-deep-black)), hsl(var(--luxury-charcoal)));
+    --gradient-gold: linear-gradient(135deg, hsl(var(--luxury-gold)), hsl(var(--luxury-champagne)));
+
+    --shadow-luxury: 0 20px 60px -15px hsl(var(--luxury-deep-black) / 0.3);
+    --shadow-gold-glow: 0 0 40px hsl(var(--luxury-gold) / 0.15);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 6%;
+    --foreground: 40 20% 95%;
+
+    --card: 0 0% 9%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 0 0% 9%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 35 80% 55%;
+    --primary-foreground: 0 0% 6%;
+
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 40 20% 85%;
+
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 55%;
+
+    --accent: 35 80% 55%;
+    --accent-foreground: 0 0% 6%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 35 80% 55%;
+
+    --luxury-gold: 35 80% 55%;
+    --luxury-champagne: 43 74% 66%;
+    --luxury-charcoal: 0 0% 20%;
+    --luxury-deep-black: 0 0% 6%;
+    --luxury-cream: 0 0% 12%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Jost', sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: 'Cormorant Garamond', serif;
+  }
+}
+
+/* Luxury scroll */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 3px; }
+
+/* Gold shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.gold-shimmer {
+  background: linear-gradient(90deg, hsl(35,85%,45%) 0%, hsl(45,95%,65%) 50%, hsl(35,85%,45%) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Fade-in animation */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+/* Slide-up animation */
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out forwards;
+}
