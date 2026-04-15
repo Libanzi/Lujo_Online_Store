@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FloatingChatButton } from "@/components/FloatingChatButton";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { lazy, Suspense } from "react";
+
+// ─── Eagerly-loaded customer pages ───────────────────────────────────────────
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Cart from "./pages/Cart";
@@ -28,21 +31,32 @@ import Terms from "./pages/Terms";
 import Products from "./pages/Products";
 import NewArrivals from "./pages/NewArrivals";
 import Chat from "./pages/Chat";
-import Admin from "./pages/Admin";
-import AdminProducts from "./pages/AdminProducts";
-import AdminCategories from "./pages/AdminCategories";
-import AdminOrders from "./pages/AdminOrders";
-import AdminDiscounts from "./pages/AdminDiscounts";
-import Analytics from "./pages/Analytics";
 import Loyalty from "./pages/Loyalty";
 import Compare from "./pages/Compare";
-import AdminMonitoring from "./pages/AdminMonitoring";
-import AdminSettings from "./pages/AdminSettings";
-import WordPressPage from "./pages/WordPressPage";
-import WordPressProducts from "./pages/WordPressProducts";
-import WordPressAdmin from "./pages/WordPressAdmin";
 import PayflexInfo from "./pages/PayflexInfo";
 import NotFound from "./pages/NotFound";
+
+// ─── Lazy-loaded admin pages (separate chunk — never sent to customers) ───────
+const Admin = lazy(() => import("./pages/Admin"));
+const AdminProducts = lazy(() => import("./pages/AdminProducts"));
+const AdminSuppliers = lazy(() => import("./pages/AdminSuppliers"));
+const AdminCategories = lazy(() => import("./pages/AdminCategories"));
+const AdminOrders = lazy(() => import("./pages/AdminOrders"));
+const AdminDiscounts = lazy(() => import("./pages/AdminDiscounts"));
+const Analytics = lazy(() => import("./pages/Analytics"));
+const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
+const AdminSettings = lazy(() => import("./pages/AdminSettings"));
+
+// ─── Lazy-loaded WordPress integration (optional) ─────────────────────────────
+const WordPressPage = lazy(() => import("./pages/WordPressPage"));
+const WordPressProducts = lazy(() => import("./pages/WordPressProducts"));
+const WordPressAdmin = lazy(() => import("./pages/WordPressAdmin"));
+
+const AdminFallback = () => (
+  <div className="min-h-screen flex items-center justify-center text-muted-foreground">
+    Loading…
+  </div>
+);
 
 const queryClient = new QueryClient();
 
@@ -55,6 +69,7 @@ const App = () => (
         <ScrollToTop />
         <FloatingChatButton />
         <Routes>
+          {/* ── Customer routes ────────────────────────────────────────── */}
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/cart" element={<Cart />} />
@@ -78,21 +93,27 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/admin/categories" element={<AdminCategories />} />
-          <Route path="/admin/orders" element={<AdminOrders />} />
-          <Route path="/admin/discounts" element={<AdminDiscounts />} />
-          <Route path="/admin/monitoring" element={<AdminMonitoring />} />
-          <Route path="/admin/analytics" element={<Analytics />} />
-          <Route path="/admin/settings" element={<AdminSettings />} />
           <Route path="/loyalty" element={<Loyalty />} />
           <Route path="/compare" element={<Compare />} />
-          <Route path="/wp/page/:slug" element={<WordPressPage />} />
-          <Route path="/wp/products" element={<WordPressProducts />} />
-          <Route path="/wp/admin" element={<WordPressAdmin />} />
           <Route path="/payflex" element={<PayflexInfo />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+
+          {/* ── Admin routes (lazy — own JS chunk) ────────────────────── */}
+          <Route path="/admin" element={<Suspense fallback={<AdminFallback />}><Admin /></Suspense>} />
+          <Route path="/admin/products" element={<Suspense fallback={<AdminFallback />}><AdminProducts /></Suspense>} />
+          <Route path="/admin/suppliers" element={<Suspense fallback={<AdminFallback />}><AdminSuppliers /></Suspense>} />
+          <Route path="/admin/categories" element={<Suspense fallback={<AdminFallback />}><AdminCategories /></Suspense>} />
+          <Route path="/admin/orders" element={<Suspense fallback={<AdminFallback />}><AdminOrders /></Suspense>} />
+          <Route path="/admin/discounts" element={<Suspense fallback={<AdminFallback />}><AdminDiscounts /></Suspense>} />
+          <Route path="/admin/monitoring" element={<Suspense fallback={<AdminFallback />}><AdminMonitoring /></Suspense>} />
+          <Route path="/admin/analytics" element={<Suspense fallback={<AdminFallback />}><Analytics /></Suspense>} />
+          <Route path="/admin/settings" element={<Suspense fallback={<AdminFallback />}><AdminSettings /></Suspense>} />
+
+          {/* ── WordPress integration (lazy) ───────────────────────────── */}
+          <Route path="/wp/page/:slug" element={<Suspense fallback={<AdminFallback />}><WordPressPage /></Suspense>} />
+          <Route path="/wp/products" element={<Suspense fallback={<AdminFallback />}><WordPressProducts /></Suspense>} />
+          <Route path="/wp/admin" element={<Suspense fallback={<AdminFallback />}><WordPressAdmin /></Suspense>} />
+
+          {/* ── Catch-all ─────────────────────────────────────────────── */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -7,8 +7,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { Download } from "lucide-react";
 
 interface OrderItem {
   id: string;
@@ -41,12 +43,56 @@ const AdminOrders = () => {
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [suppliers, setSuppliers] = useState<{ id: string; name: string }[]>([]);
+  const [selectedSupplier, setSelectedSupplier] = useState<string>("");
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     if (!adminLoading && isAdmin) {
       loadOrders();
+      loadSuppliers();
     }
   }, [adminLoading, isAdmin]);
+
+  const loadSuppliers = async () => {
+    const { data } = await supabase
+      .from("suppliers" as any)
+      .select("id, name")
+      .eq("is_active", true)
+      .order("name");
+    setSuppliers((data as { id: string; name: string }[]) || []);
+  };
+
+  const handleExportSupplierOrders = async () => {
+    if (!selectedSupplier) {
+      toast({ title: "Please select a supplier first", variant: "destructive" });
+      return;
+    }
+    setExporting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("export-orders-to-supplier", {
+        body: { supplierId: selectedSupplier },
+      });
+      if (error) throw error;
+      if (!data?.csv || data.count === 0) {
+        toast({ title: "No pending orders for this supplier" });
+        return;
+      }
+      // Trigger CSV download
+      const blob = new Blob([data.csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = data.filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast({ title: `Exported ${data.count} order line(s)` });
+    } catch (err: any) {
+      toast({ title: "Export failed", description: err.message, variant: "destructive" });
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const loadOrders = async () => {
     setLoading(true);
@@ -155,7 +201,32 @@ const AdminOrders = () => {
       <Navigation />
       <main className="flex-1 py-16">
         <div className="container px-4">
-          <h1 className="text-4xl font-bold mb-8">Manage Orders</h1>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <h1 className="text-4xl font-bold">Manage Orders</h1>
+            {suppliers.length > 0 && (
+              <div className="flex items-center gap-2">
+                <Select value={selectedSupplier} onValueChange={setSelectedSupplier}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Select supplier" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {suppliers.map((s) => (
+                      <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="outline"
+                  onClick={handleExportSupplierOrders}
+                  disabled={exporting || !selectedSupplier}
+                  className="shrink-0"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  {exporting ? "Exporting..." : "Export CSV"}
+                </Button>
+              </div>
+            )}
+          </div>
 
           {/* Payment Method Breakdown */}
           {!loading && orders.length > 0 && (

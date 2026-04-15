@@ -5,7 +5,7 @@ import { ReorderSuggestions } from "@/components/ReorderSuggestions";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Package, Layers, ShoppingBag, Percent, BarChart3, Activity, TrendingUp, Settings, Globe } from "lucide-react";
+import { Package, Layers, ShoppingBag, Percent, BarChart3, Activity, TrendingUp, Settings, Globe, Truck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
@@ -148,6 +148,18 @@ const Admin = () => {
               <CardContent>
                 <p className="text-muted-foreground">
                   Configure alert thresholds and notification channels
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate("/admin/suppliers")}>
+              <CardHeader>
+                <Truck className="h-12 w-12 text-primary mb-2" />
+                <CardTitle>Suppliers</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Manage dropshipping suppliers and export orders
                 </p>
               </CardContent>
             </Card>
